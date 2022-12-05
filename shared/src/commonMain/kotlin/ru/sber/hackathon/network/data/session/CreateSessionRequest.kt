@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateSessionRequest(
-    @SerialName("login")
-    val login: String,
-
-    @SerialName("password")
-    val password: String)
+    @SerialName("user")
+    val credentials: UserCredentialsRequest,
+)
