@@ -33,29 +33,29 @@ fun MainScreenListItem(
     ) {
         Text(
             text = text,
-            fontSize = 24.sp,
-            modifier = Modifier.padding(4.dp)
+            fontSize = 15.sp,
+            modifier = Modifier.padding(start = 12.dp, top = 4.dp)
         )
         Text(
             text = author,
-            fontSize = 20.sp,
+            fontSize = 13.sp,
             color = Color.Gray,
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier.padding(start = 12.dp, top = 4.dp)
         )
 
         Row(
             modifier = Modifier.horizontalScroll(rememberScrollState())
-                .padding(4.dp)
+                .padding(start = 12.dp, top = 4.dp, bottom = 12.dp)
         ) {
             categories.forEach { category ->
                 Box( modifier = Modifier
                     .padding(2.dp)
-                    .background(Color.Gray, shape = CircleShape)) {
+                    .background(Color.LightGray, shape = CircleShape)) {
                     Text(
                         text = category,
-                        fontSize = 20.sp,
+                        fontSize = 13.sp,
                         color = Color.Black,
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(5.dp)
                     )
                 }
             }
