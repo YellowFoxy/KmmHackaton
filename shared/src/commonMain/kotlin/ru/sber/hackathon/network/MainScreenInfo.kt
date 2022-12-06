@@ -1,4 +1,4 @@
-package ru.sber.hackathon.view.main.list
+package ru.sber.hackathon.network
 
 data class MainScreenInfo(
     val text: String = "",
