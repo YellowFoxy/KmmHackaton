@@ -110,7 +110,7 @@ fun AuthScreen() {
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 value = login,
-                onValueChange = { login = it },
+                onValueChange = { changedValue -> login = changedValue },
                 placeholder = {
                     Text(text = stringResource(R.string.loginOrEmail))
                 }
@@ -222,7 +222,8 @@ fun AuthScreen() {
                 }) {
                 Text(
                     fontSize = 16.sp,
-                    text = stringResource(R.string.forgotPassword)
+                    text = stringResource(R.string.forgotPassword),
+                    color = Color(0x8C000000)
                 )
             }
         }
