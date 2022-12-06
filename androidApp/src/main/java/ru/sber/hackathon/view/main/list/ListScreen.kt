@@ -38,9 +38,70 @@ fun ListScreen() {
 
     if (job == null) {
         job = scope.launch(CoroutineExceptionHandler { _, info ->
-            Log.e("ListScreen", info.message ?: "error")}) {
-                val list: List<MainScreenInfo> = MainViewModel().getQuotas()
-                infoList = list
+            Log.e("ListScreen", info.message ?: "error")
+            infoList = listOf(
+                MainScreenInfo(
+                    text = "Новаторы не всегда в чести. Поначалу.",
+                    author = "Джон Эдгар Гувер",
+                    categories = listOf(
+                        "жизненные цитаты", "новаторство"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Все сочувствуют несчастьям своих друзей," +
+                        "и лишь немногие - радуются их успехам.",
+                    author = "Оскар Уайльд",
+                    categories = listOf(
+                        "жизненные цитаты", "друзья, дружба"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Задумчивая душа склоняется к одиночеству.",
+                    author = "Омар Хайям",
+                    categories = listOf(
+                        "цитаты со смыслом", "душа", "одиночество"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Хорошие друзья, хорошие книги и спящая совесть - вот идеальная жизнь",
+                    author = "Омар Хайям",
+                    categories = listOf(
+                        "цитаты со смыслом", "душа", "одиночество", "жизненные цитаты", "друзья, дружба"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Новаторы не всегда в чести. Поначалу.",
+                    author = "Джон Эдгар Гувер",
+                    categories = listOf(
+                        "жизненные цитаты", "новаторство"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Все сочувствуют несчастьям своих друзей," +
+                        "и лишь немногие - радуются их успехам.",
+                    author = "Оскар Уайльд",
+                    categories = listOf(
+                        "жизненные цитаты", "друзья, дружба"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Задумчивая душа склоняется к одиночеству.",
+                    author = "Омар Хайям",
+                    categories = listOf(
+                        "цитаты со смыслом", "душа", "одиночество"
+                    )
+                ),
+                MainScreenInfo(
+                    text = "Хорошие друзья, хорошие книги и спящая совесть - вот идеальная жизнь",
+                    author = "Омар Хайям",
+                    categories = listOf(
+                        "цитаты со смыслом", "душа", "одиночество", "жизненные цитаты", "друзья, дружба"
+                    )
+                )
+            )
+        }) {
+            val list: List<MainScreenInfo> = MainViewModel().getQuotas()
+            infoList = list
         }
     }
 }
