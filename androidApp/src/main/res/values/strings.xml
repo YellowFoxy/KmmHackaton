@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcom">Добро пожаловать</string>
+    <string name="loginOrEmail">Логин или email</string>
+    <string name="password">Пароль</string>
+    <string name="enter">Вход</string>
+    <string name="registration">Регистрация</string>
+    <string name="forgotPassword">Забыли пароль?</string>
+    <string name="passwordRestoreInstruction">На данную электронную почту отправим ссылку для вопсстановления пароля</string>
+    <string name="restorePassword">Восстановить пароль</string>
+    <string name="enterEmail">Укажите email</string>
+    <string name="login">Логин</string>
+    <string name="email">Email</string>
+    <string name="createRegistration">Зарегистрироваться</string>
+</resources>
