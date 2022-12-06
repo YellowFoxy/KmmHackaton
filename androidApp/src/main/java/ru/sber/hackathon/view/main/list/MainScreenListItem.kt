@@ -1,6 +1,7 @@
 package ru.sber.hackathon.view.main.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,8 +26,13 @@ fun MainScreenListItem(
     text: String,
     author: String,
     categories: List<String>,
-    showDivider: Boolean = false
-) = Box {
+    showDivider: Boolean = false,
+    onClick: () -> (Unit) = {}
+) = Box(
+    modifier = Modifier.clickable {
+        onClick.invoke()
+    }
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceBetween

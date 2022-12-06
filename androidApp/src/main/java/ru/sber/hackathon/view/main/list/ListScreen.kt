@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
+import androidx.navigation.NavController
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.sber.hackathon.android.MyApplicationTheme
@@ -31,10 +32,10 @@ var infoList by mutableStateOf(emptyList<MainScreenInfo>())
 
 @SuppressLint("CoroutineCreationDuringComposition", "UnrememberedMutableState")
 @Composable
-fun ListScreen() {
+fun ListScreen(navController: NavController? = null) {
     val scope = rememberCoroutineScope()
 
-    ListScreenBody(infoList = infoList)
+    ListScreenBody(infoList = infoList, navController)
 
     if (job == null) {
         job = scope.launch(CoroutineExceptionHandler { _, info ->
@@ -107,7 +108,7 @@ fun ListScreen() {
 }
 
 @Composable
-fun ListScreenBody(infoList: List<MainScreenInfo>) {
+fun ListScreenBody(infoList: List<MainScreenInfo>, navController: NavController? = null) {
     Column {
         Text(
             text = "Главная",
@@ -116,21 +117,19 @@ fun ListScreenBody(infoList: List<MainScreenInfo>) {
         )
         LazyColumn {
             itemsIndexed(infoList + MainScreenInfo()) { index, info ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    MainScreenListItem(
-                        text = Html.fromHtml(info.text, 1).toString(),
-                        author = info.author,
-                        categories = info.categories,
-                        showDivider = index < infoList.lastIndex
-                    )
-                } else {
-                    MainScreenListItem(
-                        text = info.text,
-                        author = info.author,
-                        categories = info.categories,
-                        showDivider = index < infoList.lastIndex
-                    )
-                }
+                MainScreenListItem(
+                    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        Html.fromHtml(info.text, 1).toString()
+                    } else {
+                        info.text
+                    },
+                    author = info.author,
+                    categories = info.categories,
+                    showDivider = index < infoList.lastIndex,
+                    onClick = {
+                        navController?.navigate("quoteInfo")
+                    }
+                )
             }
         }
     }
