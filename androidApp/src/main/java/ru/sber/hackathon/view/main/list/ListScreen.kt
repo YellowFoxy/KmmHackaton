@@ -1,6 +1,8 @@
 package ru.sber.hackathon.view.main.list
 
 import android.annotation.SuppressLint
+import android.os.Build
+import android.text.Html
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -50,12 +52,21 @@ fun ListScreenBody(infoList: List<MainScreenInfo>) {
         )
         LazyColumn {
             itemsIndexed(infoList + MainScreenInfo()) { index, info ->
-                MainScreenListItem(
-                    text = info.text,
-                    author = info.author,
-                    categories = info.categories,
-                    showDivider = index < infoList.lastIndex
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    MainScreenListItem(
+                        text = Html.fromHtml(info.text, 1).toString(),
+                        author = info.author,
+                        categories = info.categories,
+                        showDivider = index < infoList.lastIndex
+                    )
+                } else {
+                    MainScreenListItem(
+                        text = info.text,
+                        author = info.author,
+                        categories = info.categories,
+                        showDivider = index < infoList.lastIndex
+                    )
+                }
             }
         }
     }
