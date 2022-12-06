@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -122,6 +123,7 @@ fun RegistrationScreen() {
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),
+            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             value = password,
             onValueChange = { password = it },
@@ -139,20 +141,28 @@ fun RegistrationScreen() {
                 ),
             onClick = {
                 scope.launch {
-                    val result: CreateUserResponse = MainViewModel().createUser(
-                        CreateUserRequest(
-                            CreateUserData(
-                                login, email, password
+                    if (login.isEmpty()) {
+                        snackbarHostState.showSnackbar("Введите логин")
+                    } else if (email.isEmpty()) {
+                        snackbarHostState.showSnackbar("Введите email")
+                    } else if (password.isEmpty()) {
+                        snackbarHostState.showSnackbar("Введите пароль")
+                    } else {
+                        val result: CreateUserResponse = MainViewModel().createUser(
+                            CreateUserRequest(
+                                CreateUserData(
+                                    login, email, password
+                                )
                             )
                         )
-                    )
-                    if (result.userToken.isEmpty() || result.userToken == "error") {
-                        snackbarHostState.showSnackbar("Введите данные для регистрации")
-                        login = ""
-                        password = ""
-                        email = ""
-                    } else {
-                        NavigationObject.navigate("main")
+                        if (result.userToken.isEmpty() || result.userToken == "error") {
+                            snackbarHostState.showSnackbar("Введите данные для регистрации")
+                            login = ""
+                            password = ""
+                            email = ""
+                        } else {
+                            NavigationObject.navigate("main")
+                        }
                     }
                 }
             }) {
