@@ -94,15 +94,19 @@ fun PasswordRestoreScreen() {
             onClick = {
                 keyboardController?.hide()
                 scope.launch {
-                    val result = MainViewModel().forgotPassword(
-                        ForgotPasswordRequest(
-                            ForgotPasswordUser(email)
-                        )
-                    )
-                    if (result.isEmpty() || result.contains("error")) {
+                    if (email.isEmpty()) {
                         snackbarHostState.showSnackbar("Введите данные для восстановления")
                     } else {
-                        NavigationObject.navigate("auth")
+                        val result = MainViewModel().forgotPassword(
+                            ForgotPasswordRequest(
+                                ForgotPasswordUser(email)
+                            )
+                        )
+                        if (result.isEmpty() || result.contains("error")) {
+                            snackbarHostState.showSnackbar("Ошибка при восстановлении данных")
+                        } else {
+                            NavigationObject.navigate("auth")
+                        }
                     }
                 }
             }) {
