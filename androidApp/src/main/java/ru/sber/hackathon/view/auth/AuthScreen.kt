@@ -3,6 +3,7 @@ package ru.sber.hackathon.view.auth
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,6 +62,7 @@ import ru.sber.hackathon.network.MainViewModel
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AuthScreen() {
+    val focusManager = LocalFocusManager.current
     var isErrorPassword by rememberSaveable { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scaffoldState = rememberScaffoldState()
@@ -74,7 +78,12 @@ fun AuthScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                },
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
@@ -188,7 +197,9 @@ fun AuthScreen() {
                     elevation = null,
                     colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
                     border = BorderStroke(0.dp, Color.Transparent),
-                    onClick = { NavigationObject.navigate("registration") }) {
+                    onClick = {
+                        NavigationObject.navigate("registration")
+                    }) {
                     Text(
                         fontSize = 16.sp,
                         text = stringResource(R.string.registration)
