@@ -130,17 +130,21 @@ fun AuthScreen() {
                         ),
                     onClick = {
                         scope.launch {
-                            val result = MainViewModel().createSession(
-                                CreateSessionRequest(
-                                    UserCredentialsRequest(login, password)
-                                )
-                            )
-                            if (result.userToken.isEmpty() || result.userToken == "error") {
+                            if (login.isEmpty() || password.isEmpty()) {
                                 snackbarHostState.showSnackbar("Введите данные для входа")
-                                login = ""
-                                password = ""
                             } else {
-                                NavigationObject.navigate("main")
+                                val result = MainViewModel().createSession(
+                                    CreateSessionRequest(
+                                        UserCredentialsRequest(login, password)
+                                    )
+                                )
+                                if (result.userToken.isEmpty() || result.userToken == "error") {
+                                    snackbarHostState.showSnackbar("Пользователь не найден")
+                                    login = ""
+                                    password = ""
+                                } else {
+                                    NavigationObject.navigate("main")
+                                }
                             }
                         }
                     }) {
