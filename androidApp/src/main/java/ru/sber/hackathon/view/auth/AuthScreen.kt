@@ -15,6 +15,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarData
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -106,6 +108,7 @@ fun AuthScreen() {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Button(
+
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -120,7 +123,9 @@ fun AuthScreen() {
                             UserCredentialsRequest(login, password))
                         )
                         if(result.userToken.isEmpty() || result.userToken == "error") {
-                            //Snackbar(snackbarData = )
+                            //Snackbar()
+                            login = ""
+                            password = ""
                         } else {
                             NavigationObject.navigate("main")
                         }
@@ -170,6 +175,14 @@ fun AuthScreen() {
     }
 }
 
+
+@Composable
+fun Snackbar() {
+    Snackbar {
+        Text(text = "Message sent")
+    }
+}
+
 @Preview
 @Composable
 fun AuthScreenPreview() {
@@ -177,3 +190,4 @@ fun AuthScreenPreview() {
         AuthScreen()
     }
 }
+
