@@ -14,12 +14,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Snackbar
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,14 +33,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import ru.sber.hackathon.android.MyApplicationTheme
 import ru.sber.hackathon.android.NavigationObject
 import ru.sber.hackathon.android.R
+import ru.sber.hackathon.data.data.CreateSessionRequest
+import ru.sber.hackathon.data.data.UserCredentialsRequest
+import ru.sber.hackathon.network.MainViewModel
 
 @Composable
 fun AuthScreen() {
     var login by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -108,7 +115,16 @@ fun AuthScreen() {
                         color = Color(0xFF31373B)
                     ),
                 onClick = {
-                    NavigationObject.navigate("main")
+                    scope.launch {
+                        val result = MainViewModel().createSession(CreateSessionRequest(
+                            UserCredentialsRequest(login, password))
+                        )
+                        if(result.userToken.isEmpty() || result.userToken == "error") {
+                            //Snackbar(snackbarData = )
+                        } else {
+                            NavigationObject.navigate("main")
+                        }
+                    }
                 }) {
                 Text(
                     fontSize = 16.sp,
