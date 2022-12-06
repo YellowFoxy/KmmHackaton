@@ -118,14 +118,22 @@ class KtorClient {
             }
         }.body()
 
-    suspend fun forgotPassword(request: ForgotPasswordRequest): String =
-        client.post("https://favqs.com/api/users/forgot_password") {
-            url {
-                headers {
-                    append(HttpHeaders.ContentType, "application/json")
-                    append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")
+    suspend fun forgotPassword(request: ForgotPasswordRequest): String {
+        return try {
+            client.post("https://favqs.com/api/users/forgot_password") {
+                url {
+                    headers {
+                        append(HttpHeaders.ContentType, "application/json")
+                        append(
+                            HttpHeaders.Authorization,
+                            "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\""
+                        )
+                    }
+                    setBody(request)
                 }
-                setBody(request)
-            }
-        }.body()
+            }.body()
+        } catch (ex: Exception) {
+            "error"
+        }
+    }
 }

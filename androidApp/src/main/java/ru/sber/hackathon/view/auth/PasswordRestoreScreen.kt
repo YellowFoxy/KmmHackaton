@@ -10,15 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,13 +21,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import ru.sber.hackathon.android.MyApplicationTheme
 import ru.sber.hackathon.android.NavigationObject
 import ru.sber.hackathon.android.R
+import ru.sber.hackathon.data.data.CreateSessionRequest
+import ru.sber.hackathon.data.data.UserCredentialsRequest
+import ru.sber.hackathon.data.users.ForgotPasswordRequest
+import ru.sber.hackathon.data.users.ForgotPasswordUser
+import ru.sber.hackathon.network.MainViewModel
 
 @Composable
 fun PasswordRestoreScreen() {
     var email by rememberSaveable { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -82,7 +83,18 @@ fun PasswordRestoreScreen() {
                     color = Color(0xFF31373B)
                 ),
             onClick = {
-                NavigationObject.navigate("main")
+                scope.launch {
+                    val result = MainViewModel().forgotPassword(
+                        ForgotPasswordRequest(
+                            ForgotPasswordUser(email)
+                        )
+                    )
+                    if (result.isEmpty() || result.contains("error")) {
+                        //Snackbar(snackbarData = )
+                    } else {
+                        NavigationObject.navigate("auth")
+                    }
+                }
             }) {
             Text(
                 fontSize = 16.sp,
