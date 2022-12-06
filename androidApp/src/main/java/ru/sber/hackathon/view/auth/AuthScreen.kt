@@ -53,7 +53,6 @@ import ru.sber.hackathon.network.MainViewModel
 fun AuthScreen() {
     val snackbarHostState = remember { SnackbarHostState() }
     val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
     var login by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
@@ -121,7 +120,6 @@ fun AuthScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Button(
-
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -138,7 +136,7 @@ fun AuthScreen() {
                                 )
                             )
                             if (result.userToken.isEmpty() || result.userToken == "error") {
-                                //Snackbar()
+                                snackbarHostState.showSnackbar("Введите данные для входа")
                                 login = ""
                                 password = ""
                             } else {
@@ -182,10 +180,7 @@ fun AuthScreen() {
                 colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
                 border = BorderStroke(0.dp, Color.Transparent),
                 onClick = {
-                    coroutineScope.launch {
-                        snackbarHostState.showSnackbar("Введите данные для входа")
-                    }
-                    //NavigationObject.navigate("restorePassword")
+                    NavigationObject.navigate("restorePassword")
                 }) {
                 Text(
                     fontSize = 16.sp,

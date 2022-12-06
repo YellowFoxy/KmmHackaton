@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -16,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +37,7 @@ import ru.sber.hackathon.network.MainViewModel
 fun PasswordRestoreScreen() {
     var email by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Column(
         modifier = Modifier
@@ -90,7 +93,7 @@ fun PasswordRestoreScreen() {
                         )
                     )
                     if (result.isEmpty() || result.contains("error")) {
-                        //Snackbar(snackbarData = )
+                        snackbarHostState.showSnackbar("Введите данные для входа")
                     } else {
                         NavigationObject.navigate("auth")
                     }
@@ -101,6 +104,43 @@ fun PasswordRestoreScreen() {
                 text = stringResource(R.string.restorePassword)
             )
         }
+        SnackbarHost(
+            modifier = Modifier
+                .fillMaxSize(),
+            hostState = snackbarHostState,
+            snackbar = { snackbarData: SnackbarData ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 24.dp)
+                            .background(
+                                shape = RoundedCornerShape(12.dp),
+                                color = Color(0xFF31373B)
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.snack_icon),
+                            contentDescription = null,
+                            tint = Color(0xFFE35502),
+                            modifier = Modifier
+                                .padding(horizontal = 17.dp, vertical = 12.dp),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(vertical = 15.dp),
+                            text = snackbarData.message,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+        )
     }
 }
 

@@ -54,6 +54,7 @@ class KtorClient {
         client.get("https://favqs.com/api/quotes") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")
             }
         }.body()
 
@@ -73,16 +74,21 @@ class KtorClient {
         }
     }
 
-    suspend fun createUser(request: CreateUserRequest): CreateUserResponse =
-        client.post("https://favqs.com/api/users") {
-            url {
-                headers {
-                    append(HttpHeaders.ContentType, "application/json")
-                    append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")
-                }
-                setBody(request)
-            }
-        }.body()
+    suspend fun createUser(request: CreateUserRequest): CreateUserResponse {
+       return try {
+           client.post("https://favqs.com/api/users") {
+               url {
+                   headers {
+                       append(HttpHeaders.ContentType, "application/json")
+                       append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")
+                   }
+                   setBody(request)
+               }
+           }.body()
+       } catch (ex: Exception){
+           CreateUserResponse("error", request.user.login)
+       }
+    }
 
     suspend fun getUser(): String =
         client.get("https://favqs.com/api/users") {
