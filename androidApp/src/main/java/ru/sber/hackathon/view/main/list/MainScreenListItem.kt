@@ -50,7 +50,7 @@ fun MainScreenListItem(
             categories.forEach { category ->
                 Box( modifier = Modifier
                     .padding(2.dp)
-                    .background(Color.LightGray, shape = CircleShape)) {
+                    .background(Color(0x14000000), shape = CircleShape)) {
                     Text(
                         text = category,
                         fontSize = 13.sp,

@@ -11,7 +11,6 @@ import ru.sber.hackathon.view.auth.AuthScreen
 import ru.sber.hackathon.view.auth.PasswordRestoreScreen
 import ru.sber.hackathon.view.auth.RegistrationScreen
 import ru.sber.hackathon.view.main.MainScreen
-import ru.sber.hackathon.view.main.MainScreenInfo
 
 class MainActivity : ComponentActivity() {
 
@@ -30,39 +29,8 @@ class MainActivity : ComponentActivity() {
                         composable("auth") { AuthScreen() }
                         composable("registration") { RegistrationScreen() }
                         composable("restorePassword") { PasswordRestoreScreen() }
-                        composable("main") {
-                            MainScreen(
-                                listOf(
-                                    MainScreenInfo(
-                                        text = "Text 1",
-                                        author = "Author 1",
-                                        categories = listOf(
-                                            "Category1", "Category2", "Category3", "Category4", "Category5"
-                                        )
-                                    ),
-                                    MainScreenInfo(
-                                        text = "Text 2",
-                                        author = "Author 2",
-                                        categories = listOf(
-                                            "Category6", "Category7", "Category8", "Category9", "Category10"
-                                        )
-                                    )
-                                )
-                            )
-                        }
+                        composable("main") { MainScreen() }
                     }
-                    //  val scope = rememberCoroutineScope()
-                    //  var text by remember { mutableStateOf("Loading") }
-                    //  LaunchedEffect(true) {
-                    //      scope.launch {
-                    //          text = try {
-                    //              KtorClient().getData()
-                    //          } catch (e: Exception) {
-                    //              e.localizedMessage ?: "error"
-                    //          }
-                    //      }
-                    //  }
-                    // GreetingView(text)
                 }
             }
         }

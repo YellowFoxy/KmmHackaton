@@ -2,11 +2,7 @@ package ru.sber.hackathon.view.main
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -18,83 +14,30 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import ru.sber.hackathon.android.MyApplicationTheme
-import ru.sber.hackathon.android.NavigationObject
-import ru.sber.hackathon.view.main.list.MainScreenListItem
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import ru.sber.hackathon.view.main.list.ListScreen
+import ru.sber.hackathon.view.main.profile.ProfileScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(
-    infoList: List<MainScreenInfo> = listOf(
-        MainScreenInfo(
-            text = "Новаторы не всегда в чести. Поначалу.",
-            author = "Джон Эдгар Гувер",
-            categories = listOf(
-                "жизненные цитаты", "новаторство"
-            )
-        ),
-        MainScreenInfo(
-            text = "Все сочувствуют несчастьям своих друзей," +
-                "и лишь немногие - радуются их успехам.",
-            author = "Оскар Уайльд",
-            categories = listOf(
-                "жизненные цитаты", "друзья, дружба"
-            )
-        ),
-        MainScreenInfo(
-            text = "Задумчивая душа склоняется к одиночеству.",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество"
-            )
-        ),
-        MainScreenInfo(
-            text = "Хорошие друзья, хорошие книги и спящая совесть - вот идеальная жизнь",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество", "жизненные цитаты", "друзья, дружба"
-            )
-        ),
-        MainScreenInfo(
-            text = "Новаторы не всегда в чести. Поначалу.",
-            author = "Джон Эдгар Гувер",
-            categories = listOf(
-                "жизненные цитаты", "новаторство"
-            )
-        ),
-        MainScreenInfo(
-            text = "Все сочувствуют несчастьям своих друзей," +
-                "и лишь немногие - радуются их успехам.",
-            author = "Оскар Уайльд",
-            categories = listOf(
-                "жизненные цитаты", "друзья, дружба"
-            )
-        ),
-        MainScreenInfo(
-            text = "Задумчивая душа склоняется к одиночеству.",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество"
-            )
-        ),
-        MainScreenInfo(
-            text = "Хорошие друзья, хорошие книги и спящая совесть - вот идеальная жизнь",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество", "жизненные цитаты", "друзья, дружба"
-            )
-        )
-    )
-) {
+fun MainScreen() {
+    val navControllerBottomBar = rememberNavController()
 
     Scaffold(
-        bottomBar = { ScreenWithNav(NavigationObject.navController!!) }
+        bottomBar = { ScreenWithNav(navControllerBottomBar) }
     ) {
-        MainScreenBody(infoList)
+        NavHost(
+            navController = navControllerBottomBar,
+            startDestination = "list",
+            route = "bbr"
+        ) {
+            composable("list") { ListScreen() }
+            composable("profile") { ProfileScreen() }
+        }
     }
 }
 
@@ -105,7 +48,7 @@ fun ScreenWithNav(navController: NavController) {
             navController = navController,
             icon = { Icon(Icons.Filled.Home, contentDescription = "") },
             title = "Главная",
-            route = "main"
+            route = "list"
         )
         BottomNavItem(
             navController = navController,
@@ -136,6 +79,7 @@ fun RowScope.BottomNavItem(
         unselectedContentColor = Color.Black.copy(0.4f),
         alwaysShowLabel = true,
         selected = currentRoute == route,
+        modifier = Modifier.background(Color.White),
         onClick = {
             navController.navigate(route) {
                 navController.graph.startDestinationRoute?.let { screen_route ->
@@ -148,57 +92,4 @@ fun RowScope.BottomNavItem(
             }
         }
     )
-}
-
-@Composable
-fun MainScreenBody(infoList: List<MainScreenInfo>) {
-    Column {
-        Text(
-            text = "Главная",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(4.dp)
-        )
-        LazyColumn {
-            itemsIndexed(
-                infoList +
-
-                    MainScreenInfo()
-            ) { index, info ->
-                MainScreenListItem(
-                    text = info.text,
-                    author = info.author,
-                    categories = info.categories,
-                    showDivider = index < infoList.lastIndex
-                )
-            }
-        }
-    }
-}
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
-@Composable
-fun DefaultPreview() {
-    MyApplicationTheme {
-        Scaffold {
-            MainScreenBody(
-                listOf(
-                    MainScreenInfo(
-                        text = "Text 1",
-                        author = "Author 1",
-                        categories = listOf(
-                            "Category1", "Category2", "Category3", "Category4", "Category5"
-                        )
-                    ),
-                    MainScreenInfo(
-                        text = "Text 2",
-                        author = "Author 2",
-                        categories = listOf(
-                            "Category6", "Category7", "Category8", "Category9", "Category10"
-                        )
-                    )
-                )
-            )
-        }
-    }
 }
