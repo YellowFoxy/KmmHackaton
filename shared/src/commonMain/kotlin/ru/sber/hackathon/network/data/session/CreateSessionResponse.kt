@@ -1,4 +1,4 @@
-package ru.sber.hackathon.data.data
+package ru.sber.hackathon.network.data.session
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

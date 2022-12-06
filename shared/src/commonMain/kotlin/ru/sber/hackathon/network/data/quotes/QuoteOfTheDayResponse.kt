@@ -1,13 +1,13 @@
 package ru.sber.hackathon.network.data.quotes
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class QuoteOfTheDayResponse(
     @SerialName("qotd_date")
-    val qotdDate: String,
+    val qotd_date: String = "",
 
     @SerialName("quote")
-    val quote: QuoteResponse
+    val quote: QuoteResponse? = null
 )

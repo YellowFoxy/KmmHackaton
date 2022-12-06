@@ -3,10 +3,7 @@ package ru.sber.hackathon.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +31,7 @@ class MainActivity : ComponentActivity() {
                         composable("restorePassword") { PasswordRestoreScreen() }
                         composable("main") {
                             MainScreen(
+                                navController,
                                 listOf(
                                     MainScreenInfo(
                                         text = "Text 1",
@@ -52,7 +50,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             )
                         }
-                }
+                    }
                     //  val scope = rememberCoroutineScope()
                     //  var text by remember { mutableStateOf("Loading") }
                     //  LaunchedEffect(true) {
