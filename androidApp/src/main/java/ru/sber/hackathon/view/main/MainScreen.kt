@@ -22,12 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ru.sber.hackathon.android.MyApplicationTheme
+import ru.sber.hackathon.android.NavigationObject
 import ru.sber.hackathon.view.main.list.MainScreenListItem
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    navController: NavController, infoList: List<MainScreenInfo> = listOf(
+    infoList: List<MainScreenInfo> = listOf(
         MainScreenInfo(
             text = "Новаторы не всегда в чести. Поначалу.",
             author = "Джон Эдгар Гувер",
@@ -90,7 +91,7 @@ fun MainScreen(
 ) {
 
     Scaffold(
-        bottomBar = { ScreenWithNav(navController) }
+        bottomBar = { ScreenWithNav(NavigationObject.navController!!) }
     ) {
         MainScreenBody(infoList)
     }

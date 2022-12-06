@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.sber.hackathon.view.auth.AuthScreen
+import ru.sber.hackathon.view.auth.PasswordRestoreScreen
 import ru.sber.hackathon.view.auth.RegistrationScreen
 import ru.sber.hackathon.view.main.MainScreen
 import ru.sber.hackathon.view.main.MainScreenInfo
@@ -31,7 +32,6 @@ class MainActivity : ComponentActivity() {
                         composable("restorePassword") { PasswordRestoreScreen() }
                         composable("main") {
                             MainScreen(
-                                navController,
                                 listOf(
                                     MainScreenInfo(
                                         text = "Text 1",
