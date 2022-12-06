@@ -48,7 +48,7 @@ fun ListScreenBody(infoList: List<MainScreenInfo>) {
         Text(
             text = "Главная",
             fontSize = 24.sp,
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier.padding(8.dp)
         )
         LazyColumn {
             itemsIndexed(infoList + MainScreenInfo()) { index, info ->
