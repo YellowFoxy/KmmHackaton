@@ -170,10 +170,10 @@ fun RegistrationScreen() {
                             )
                         )
                         if (result.userToken.isEmpty() || result.userToken == "error") {
-                            snackbarHostState.showSnackbar("Введите данные для регистрации")
                             login = ""
                             password = ""
                             email = ""
+                            snackbarHostState.showSnackbar("Введите данные для регистрации")
                         } else {
                             NavigationObject.navigate("main")
                         }

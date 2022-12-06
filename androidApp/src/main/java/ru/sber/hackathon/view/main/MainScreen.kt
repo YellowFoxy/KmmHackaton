@@ -12,6 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
@@ -21,6 +24,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.sber.hackathon.view.main.list.ListScreen
 import ru.sber.hackathon.view.main.profile.ProfileScreen
+
+var selectedTab by mutableStateOf("list")
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -66,7 +71,6 @@ fun RowScope.BottomNavItem(
     title: String,
     route: String
 ) {
-    val currentRoute = navController.currentDestination?.route
     BottomNavigationItem(
         icon = icon,
         label = {
@@ -78,10 +82,11 @@ fun RowScope.BottomNavItem(
         selectedContentColor = Color.Black,
         unselectedContentColor = Color.Black.copy(0.4f),
         alwaysShowLabel = true,
-        selected = currentRoute == route,
+        selected = selectedTab == route,
         modifier = Modifier.background(Color.White),
         onClick = {
             navController.navigate(route) {
+                selectedTab = route
                 navController.graph.startDestinationRoute?.let { screen_route ->
                     popUpTo(screen_route) {
                         saveState = true
