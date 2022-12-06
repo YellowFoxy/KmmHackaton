@@ -1,6 +1,7 @@
 package ru.sber.hackathon.view.main
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -137,7 +138,6 @@ fun RowScope.BottomNavItem(
         selected = currentRoute == route,
         onClick = {
             navController.navigate(route) {
-
                 navController.graph.startDestinationRoute?.let { screen_route ->
                     popUpTo(screen_route) {
                         saveState = true
