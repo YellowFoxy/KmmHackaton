@@ -16,22 +16,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.sber.hackathon.android.MyApplicationTheme
 import ru.sber.hackathon.network.MainScreenInfo
 import ru.sber.hackathon.network.MainViewModel
 
+var job: Job? = null
+var infoList by mutableStateOf(emptyList<MainScreenInfo>())
+
 @SuppressLint("CoroutineCreationDuringComposition", "UnrememberedMutableState")
 @Composable
 fun ListScreen() {
-    var infoList by mutableStateOf(emptyList<MainScreenInfo>())
     val scope = rememberCoroutineScope()
 
     ListScreenBody(infoList = infoList)
 
-    scope.launch {
-        val list: List<MainScreenInfo> = MainViewModel().getQuotas()
-        infoList = list
+    if (job == null) {
+        job = scope.launch {
+            val list: List<MainScreenInfo> = MainViewModel().getQuotas()
+            infoList = list
+        }
     }
 }
 
