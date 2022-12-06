@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -14,21 +15,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Snackbar
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
-import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,102 +51,129 @@ import ru.sber.hackathon.network.MainViewModel
 
 @Composable
 fun AuthScreen() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
     var login by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
+    Scaffold(
+        modifier = Modifier,
+        scaffoldState = scaffoldState
     ) {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(R.string.welcom)
-        )
-        TextField(
+        it.calculateTopPadding()
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(1.dp, Color.Transparent, CircleShape),
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                disabledTextColor = Color.Transparent,
-                backgroundColor = Color(0x14000000),
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
-            value = login,
-            onValueChange = { login = it },
-            placeholder = {
-                Text(text = stringResource(R.string.loginOrEmail))
-            }
-        )
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(1.dp, Color.Transparent, CircleShape),
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                disabledTextColor = Color.Transparent,
-                backgroundColor = Color(0x14000000),
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            value = password,
-            onValueChange = { password = it },
-            placeholder = {
-                Text(text = stringResource(R.string.password))
-            }
-        )
-        Row(
-            modifier = Modifier.padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
         ) {
-            Button(
-
+            Text(
+                modifier = Modifier.padding(16.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.welcom)
+            )
+            TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .weight(1f)
-                    .background(
-                        shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFF31373B)
-                    ),
-                onClick = {
-                    scope.launch {
-                        val result = MainViewModel().createSession(CreateSessionRequest(
-                            UserCredentialsRequest(login, password))
-                        )
-                        if(result.userToken.isEmpty() || result.userToken == "error") {
-                            //Snackbar()
-                            login = ""
-                            password = ""
-                        } else {
-                            NavigationObject.navigate("main")
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .border(1.dp, Color.Transparent, CircleShape),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = Color.Black,
+                    disabledTextColor = Color.Transparent,
+                    backgroundColor = Color(0x14000000),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                value = login,
+                onValueChange = { login = it },
+                placeholder = {
+                    Text(text = stringResource(R.string.loginOrEmail))
+                }
+            )
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .border(1.dp, Color.Transparent, CircleShape),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = Color.Black,
+                    disabledTextColor = Color.Transparent,
+                    backgroundColor = Color(0x14000000),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                value = password,
+                onValueChange = { password = it },
+                placeholder = {
+                    Text(text = stringResource(R.string.password))
+                }
+            )
+            Row(
+                modifier = Modifier.padding(vertical = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Button(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .weight(1f)
+                        .background(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF31373B)
+                        ),
+                    onClick = {
+                        scope.launch {
+                            val result = MainViewModel().createSession(
+                                CreateSessionRequest(
+                                    UserCredentialsRequest(login, password)
+                                )
+                            )
+                            if (result.userToken.isEmpty() || result.userToken == "error") {
+                                //Snackbar()
+                                login = ""
+                                password = ""
+                            } else {
+                                NavigationObject.navigate("main")
+                            }
                         }
-                    }
-                }) {
-                Text(
-                    fontSize = 16.sp,
-                    text = stringResource(R.string.enter)
-                )
+                    }) {
+                    Text(
+                        fontSize = 16.sp,
+                        text = stringResource(R.string.enter)
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .background(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color.Transparent
+                        ),
+                    elevation = null,
+                    colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
+                    border = BorderStroke(0.dp, Color.Transparent),
+                    onClick = { NavigationObject.navigate("registration") }) {
+                    Text(
+                        fontSize = 16.sp,
+                        text = stringResource(R.string.registration)
+                    )
+                }
             }
             Button(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth()
-                    .weight(1f)
                     .background(
                         shape = RoundedCornerShape(12.dp),
                         color = Color.Transparent
@@ -148,38 +181,56 @@ fun AuthScreen() {
                 elevation = null,
                 colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
                 border = BorderStroke(0.dp, Color.Transparent),
-                onClick = { NavigationObject.navigate("registration") }) {
+                onClick = {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("Введите данные для входа")
+                    }
+                    //NavigationObject.navigate("restorePassword")
+                }) {
                 Text(
                     fontSize = 16.sp,
-                    text = stringResource(R.string.registration)
+                    text = stringResource(R.string.forgotPassword)
                 )
             }
         }
-        Button(
+
+        SnackbarHost(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth()
-                .background(
-                    shape = RoundedCornerShape(12.dp),
-                    color = Color.Transparent
-                ),
-            elevation = null,
-            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
-            border = BorderStroke(0.dp, Color.Transparent),
-            onClick = { NavigationObject.navigate("restorePassword") }) {
-            Text(
-                fontSize = 16.sp,
-                text = stringResource(R.string.forgotPassword)
-            )
-        }
-    }
-}
-
-
-@Composable
-fun Snackbar() {
-    Snackbar {
-        Text(text = "Message sent")
+                .fillMaxSize(),
+            hostState = snackbarHostState,
+            snackbar = { snackbarData: SnackbarData ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 24.dp)
+                            .background(
+                                shape = RoundedCornerShape(12.dp),
+                                color = Color(0xFF31373B)
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.snack_icon),
+                            contentDescription = null,
+                            tint = Color(0xFFE35502),
+                            modifier = Modifier
+                                .padding(horizontal = 17.dp, vertical = 12.dp),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(vertical = 15.dp),
+                            text = snackbarData.message,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+        )
     }
 }
 
