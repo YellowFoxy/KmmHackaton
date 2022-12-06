@@ -3,6 +3,7 @@ package ru.sber.hackathon.view.main.list
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.Html
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.sber.hackathon.android.MyApplicationTheme
@@ -35,9 +37,10 @@ fun ListScreen() {
     ListScreenBody(infoList = infoList)
 
     if (job == null) {
-        job = scope.launch {
-            val list: List<MainScreenInfo> = MainViewModel().getQuotas()
-            infoList = list
+        job = scope.launch(CoroutineExceptionHandler { _, info ->
+            Log.e("ListScreen", info.message ?: "error")}) {
+                val list: List<MainScreenInfo> = MainViewModel().getQuotas()
+                infoList = list
         }
     }
 }
