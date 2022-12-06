@@ -12,10 +12,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import ru.sber.hackathon.data.data.CreateSessionRequest
 import ru.sber.hackathon.data.data.UserCredentialsRequest
-import ru.sber.hackathon.data.users.CreateUserRequest
-import ru.sber.hackathon.data.users.CreateUserResponse
-import ru.sber.hackathon.data.users.ForgotPasswordRequest
-import ru.sber.hackathon.data.users.UpdateUserResponse
+import ru.sber.hackathon.data.users.*
 import ru.sber.hackathon.network.data.quotes.QuoteOfTheDayResponse
 import ru.sber.hackathon.network.data.quotes.QuotesListResponse
 import ru.sber.hackathon.network.data.session.CreateSessionResponse
@@ -91,16 +88,22 @@ class KtorClient {
        }
     }
 
-    suspend fun getUser(): String =
-        client.get("https://favqs.com/api/users") {
-            url {
-                headers {
-                    append(HttpHeaders.ContentType, "application/json")
-                    append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")
+    suspend fun getUser(login: String, session: String): GetUserResponse {
+        return try {
+            client.get("https://favqs.com/api/users") {
+                url {
+                    headers {
+                        append(HttpHeaders.ContentType, "application/json")
+                        append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")
+                        append("User-Token", session)
+                    }
+                    parameters.append("login", login)
                 }
-                parameters.append("login", "borrmaskin")
-            }
-        }.body()
+            }.body()
+        } catch (e: Exception) {
+            GetUserResponse(login = "error", "", 0, 0, 0, false, null)
+        }
+    }
 
     suspend fun updateUser(): String =
         client.post("https://favqs.com/api/session") {

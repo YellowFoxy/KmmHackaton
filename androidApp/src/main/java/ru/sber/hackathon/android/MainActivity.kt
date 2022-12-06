@@ -35,4 +35,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        var currentUserLogin: String = ""
+        var currentUserSession: String = ""
+    }
 }

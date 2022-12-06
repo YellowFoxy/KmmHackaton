@@ -12,8 +12,8 @@ data class UserAccountDetails (
     val privateFavouritesCount: Int,
 
     @SerialName("active_theme_id")
-    val activeThemeId: Long,
+    val activeThemeId: Long = 0,
 
     @SerialName("pro_expiration")
-    val proExpiration: String
+    val proExpiration: String = ""
 )

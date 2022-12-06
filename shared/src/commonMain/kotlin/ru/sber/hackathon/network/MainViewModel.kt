@@ -10,6 +10,8 @@ class MainViewModel {
     suspend fun createSession(request: CreateSessionRequest) =
         client.createSession(request)
 
+    suspend fun getUser(login: String, session: String) = client.getUser(login, session)
+
     suspend fun getQuotas(): List<MainScreenInfo> = client.getQuotesList().quotes
         .map { MainScreenInfo(text = it.body, author = it.author, categories = it.tags) }
 

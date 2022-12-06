@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.sber.hackathon.android.MainActivity
 import ru.sber.hackathon.android.MyApplicationTheme
 import ru.sber.hackathon.android.NavigationObject
 import ru.sber.hackathon.android.R
@@ -175,6 +176,8 @@ fun AuthScreen() {
                                     }
                                     snackbarHostState.showSnackbar("Пользователь не найден")
                                 } else {
+                                    MainActivity.currentUserLogin = result.login
+                                    MainActivity.currentUserSession = result.userToken
                                     NavigationObject.navigate("main")
                                 }
                             }
