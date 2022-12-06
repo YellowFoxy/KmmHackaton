@@ -9,52 +9,38 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun RegistrationScreen() {
+fun PasswordRestoreScreen() {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        Text(text = "Регистрация")
+        Text(text = stringResource(R.string.forgotPassword))
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = "",
             onValueChange = { },
             placeholder = {
-                Text(text = "Логин")
+                Text(text = stringResource(R.string.enterEmail))
             }
         )
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = "",
-            onValueChange = { },
-            placeholder = {
-                Text(text = "Email")
-            }
-        )
-        TextField(
-            value = "",
-            modifier = Modifier.fillMaxWidth(),
-            onValueChange = { },
-            placeholder = {
-                Text(text = "Пароль")
-            }
-        )
+        Text(text = stringResource(R.string.passwordRestoreInstruction))
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = { }) {
-            Text(text = "Зарегистрироваться")
+            Text(text = stringResource(R.string.restorePassword))
         }
     }
 }
 
 @Preview
 @Composable
-fun RegistrationScreenPreview() {
+fun PasswordRestoreScreenPreview() {
     MyApplicationTheme {
-        RegistrationScreen()
+        PasswordRestoreScreen()
     }
 }
