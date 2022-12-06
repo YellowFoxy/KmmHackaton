@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
                         composable("restorePassword") { PasswordRestoreScreen() }
                         composable("main") {
                             MainScreen(
-                                navController,
                                 listOf(
                                     MainScreenInfo(
                                         text = "Text 1",
@@ -51,7 +50,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             )
                         }
-                }
+                    }
                     //  val scope = rememberCoroutineScope()
                     //  var text by remember { mutableStateOf("Loading") }
                     //  LaunchedEffect(true) {
