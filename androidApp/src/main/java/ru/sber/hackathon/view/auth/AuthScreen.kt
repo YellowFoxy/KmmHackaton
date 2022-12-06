@@ -40,6 +40,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,6 +114,7 @@ fun AuthScreen() {
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
                 ),
+                visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 value = password,
                 onValueChange = { password = it },
@@ -136,17 +139,21 @@ fun AuthScreen() {
                     onClick = {
                         keyboardController?.hide()
                         scope.launch {
-                            val result = MainViewModel().createSession(
-                                CreateSessionRequest(
-                                    UserCredentialsRequest(login, password)
-                                )
-                            )
-                            if (result.userToken.isEmpty() || result.userToken == "error") {
+                            if (login.isEmpty() || password.isEmpty()) {
                                 snackbarHostState.showSnackbar("Введите данные для входа")
-                                login = ""
-                                password = ""
                             } else {
-                                NavigationObject.navigate("main")
+                                val result = MainViewModel().createSession(
+                                    CreateSessionRequest(
+                                        UserCredentialsRequest(login, password)
+                                    )
+                                )
+                                if (result.userToken.isEmpty() || result.userToken == "error") {
+                                    snackbarHostState.showSnackbar("Пользователь не найден")
+                                    login = ""
+                                    password = ""
+                                } else {
+                                    NavigationObject.navigate("main")
+                                }
                             }
                         }
                     }) {

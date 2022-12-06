@@ -153,7 +153,7 @@ fun RegistrationScreen() {
                         )
                     )
                     if (result.userToken.isEmpty() || result.userToken == "error") {
-                        snackbarHostState.showSnackbar("Данные для регистрации некорректны")
+                        snackbarHostState.showSnackbar("Введите данные для регистрации")
                         login = ""
                         password = ""
                         email = ""
@@ -167,44 +167,44 @@ fun RegistrationScreen() {
                 text = stringResource(R.string.createRegistration)
             )
         }
-        SnackbarHost(
-            modifier = Modifier
-                .fillMaxSize(),
-            hostState = snackbarHostState,
-            snackbar = { snackbarData: SnackbarData ->
-                Column(
+    }
+    SnackbarHost(
+        modifier = Modifier
+            .fillMaxSize(),
+        hostState = snackbarHostState,
+        snackbar = { snackbarData: SnackbarData ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Row(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Bottom
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 24.dp)
+                        .background(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF31373B)
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
+                    Icon(
+                        painterResource(id = R.drawable.snack_icon),
+                        contentDescription = null,
+                        tint = Color(0xFFE35502),
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 24.dp)
-                            .background(
-                                shape = RoundedCornerShape(12.dp),
-                                color = Color(0xFF31373B)
-                            ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painterResource(id = R.drawable.snack_icon),
-                            contentDescription = null,
-                            tint = Color(0xFFE35502),
-                            modifier = Modifier
-                                .padding(horizontal = 17.dp, vertical = 12.dp),
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(vertical = 15.dp),
-                            text = snackbarData.message,
-                            color = Color.White
-                        )
-                    }
+                            .padding(horizontal = 17.dp, vertical = 12.dp),
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 15.dp),
+                        text = snackbarData.message,
+                        color = Color.White
+                    )
                 }
             }
-        )
-    }
+        }
+    )
 }
 
 @Preview
