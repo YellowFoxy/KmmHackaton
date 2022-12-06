@@ -17,6 +17,7 @@ import ru.sber.hackathon.data.users.CreateUserResponse
 import ru.sber.hackathon.data.users.ForgotPasswordRequest
 import ru.sber.hackathon.data.users.UpdateUserResponse
 import ru.sber.hackathon.network.data.quotes.QuoteOfTheDayResponse
+import ru.sber.hackathon.network.data.quotes.QuotesListResponse
 import ru.sber.hackathon.network.data.session.CreateSessionResponse
 
 class KtorClient {
@@ -50,8 +51,8 @@ class KtorClient {
         }
     }
 
-    suspend fun getQuotesList(): List<QuoteOfTheDayResponse> =
-        client.get("https://favqs.com/api/quotes") {
+    suspend fun getQuotesList(): QuotesListResponse =
+        client.get("https://favqs.com/api/quotes/?page=1") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
                 append(HttpHeaders.Authorization, "Token token=\"3ea3dbf2c2aa70fc882c575f9059f035\"")

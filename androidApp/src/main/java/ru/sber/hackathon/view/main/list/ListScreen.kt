@@ -8,75 +8,35 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import ru.sber.hackathon.android.MyApplicationTheme
+import ru.sber.hackathon.network.MainScreenInfo
+import ru.sber.hackathon.network.MainViewModel
+
+@SuppressLint("CoroutineCreationDuringComposition", "UnrememberedMutableState")
+@Composable
+fun ListScreen() {
+    var infoList by mutableStateOf(emptyList<MainScreenInfo>())
+    val scope = rememberCoroutineScope()
+
+    ListScreenBody(infoList = infoList)
+
+    scope.launch {
+        val list: List<MainScreenInfo> = MainViewModel().getQuotas()
+        infoList = list
+    }
+}
 
 @Composable
-fun ListScreen(
-    infoList: List<MainScreenInfo> = listOf(
-        MainScreenInfo(
-            text = "Новаторы не всегда в чести. Поначалу.",
-            author = "Джон Эдгар Гувер",
-            categories = listOf(
-                "жизненные цитаты", "новаторство"
-            )
-        ),
-        MainScreenInfo(
-            text = "Все сочувствуют несчастьям своих друзей," +
-                "и лишь немногие - радуются их успехам.",
-            author = "Оскар Уайльд",
-            categories = listOf(
-                "жизненные цитаты", "друзья, дружба"
-            )
-        ),
-        MainScreenInfo(
-            text = "Задумчивая душа склоняется к одиночеству.",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество"
-            )
-        ),
-        MainScreenInfo(
-            text = "Хорошие друзья, хорошие книги и спящая совесть - вот идеальная жизнь",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество", "жизненные цитаты", "друзья, дружба"
-            )
-        ),
-        MainScreenInfo(
-            text = "Новаторы не всегда в чести. Поначалу.",
-            author = "Джон Эдгар Гувер",
-            categories = listOf(
-                "жизненные цитаты", "новаторство"
-            )
-        ),
-        MainScreenInfo(
-            text = "Все сочувствуют несчастьям своих друзей," +
-                "и лишь немногие - радуются их успехам.",
-            author = "Оскар Уайльд",
-            categories = listOf(
-                "жизненные цитаты", "друзья, дружба"
-            )
-        ),
-        MainScreenInfo(
-            text = "Задумчивая душа склоняется к одиночеству.",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество"
-            )
-        ),
-        MainScreenInfo(
-            text = "Хорошие друзья, хорошие книги и спящая совесть - вот идеальная жизнь",
-            author = "Омар Хайям",
-            categories = listOf(
-                "цитаты со смыслом", "душа", "одиночество", "жизненные цитаты", "друзья, дружба"
-            )
-        )
-    )
-) {
+fun ListScreenBody(infoList: List<MainScreenInfo>) {
     Column {
         Text(
             text = "Главная",
@@ -102,7 +62,7 @@ fun ListScreen(
 fun ListScreenPreview() {
     MyApplicationTheme {
         Scaffold {
-            ListScreen(
+            ListScreenBody(
                 listOf(
                     MainScreenInfo(
                         text = "Text 1",
