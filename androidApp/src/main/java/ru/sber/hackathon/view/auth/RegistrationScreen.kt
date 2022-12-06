@@ -28,8 +28,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,14 +48,17 @@ import ru.sber.hackathon.data.users.CreateUserRequest
 import ru.sber.hackathon.data.users.CreateUserResponse
 import ru.sber.hackathon.network.MainViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RegistrationScreen() {
 
     var login by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-    var scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Column(
         modifier = Modifier
@@ -138,6 +143,7 @@ fun RegistrationScreen() {
                     color = Color(0xFF31373B)
                 ),
             onClick = {
+                keyboardController?.hide()
                 scope.launch {
                     val result: CreateUserResponse = MainViewModel().createUser(
                         CreateUserRequest(
@@ -147,7 +153,7 @@ fun RegistrationScreen() {
                         )
                     )
                     if (result.userToken.isEmpty() || result.userToken == "error") {
-                        snackbarHostState.showSnackbar("Введите данные для входа")
+                        snackbarHostState.showSnackbar("Данные для регистрации некорректны")
                         login = ""
                         password = ""
                         email = ""

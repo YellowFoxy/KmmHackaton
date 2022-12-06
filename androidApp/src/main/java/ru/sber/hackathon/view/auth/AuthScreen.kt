@@ -32,8 +32,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +51,7 @@ import ru.sber.hackathon.data.data.CreateSessionRequest
 import ru.sber.hackathon.data.data.UserCredentialsRequest
 import ru.sber.hackathon.network.MainViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AuthScreen() {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -56,6 +59,7 @@ fun AuthScreen() {
     var login by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         modifier = Modifier,
         scaffoldState = scaffoldState
@@ -114,6 +118,7 @@ fun AuthScreen() {
                 placeholder = {
                     Text(text = stringResource(R.string.password))
                 }
+
             )
             Row(
                 modifier = Modifier.padding(vertical = 16.dp),
@@ -129,6 +134,7 @@ fun AuthScreen() {
                             color = Color(0xFF31373B)
                         ),
                     onClick = {
+                        keyboardController?.hide()
                         scope.launch {
                             val result = MainViewModel().createSession(
                                 CreateSessionRequest(

@@ -15,8 +15,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,11 +35,14 @@ import ru.sber.hackathon.data.users.ForgotPasswordRequest
 import ru.sber.hackathon.data.users.ForgotPasswordUser
 import ru.sber.hackathon.network.MainViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PasswordRestoreScreen() {
     var email by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Column(
         modifier = Modifier
@@ -86,6 +91,7 @@ fun PasswordRestoreScreen() {
                     color = Color(0xFF31373B)
                 ),
             onClick = {
+                keyboardController?.hide()
                 scope.launch {
                     val result = MainViewModel().forgotPassword(
                         ForgotPasswordRequest(
@@ -93,7 +99,7 @@ fun PasswordRestoreScreen() {
                         )
                     )
                     if (result.isEmpty() || result.contains("error")) {
-                        snackbarHostState.showSnackbar("Введите данные для входа")
+                        snackbarHostState.showSnackbar("Пользователь с такими ранными не найден")
                     } else {
                         NavigationObject.navigate("auth")
                     }
