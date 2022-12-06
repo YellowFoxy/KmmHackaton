@@ -3,7 +3,6 @@ package ru.sber.hackathon.network
 import ru.sber.hackathon.data.data.CreateSessionRequest
 import ru.sber.hackathon.data.users.CreateUserRequest
 import ru.sber.hackathon.data.users.ForgotPasswordRequest
-import ru.sber.hackathon.network.data.quotes.QuoteOfTheDayResponse
 
 class MainViewModel {
     private val client = KtorClient()
