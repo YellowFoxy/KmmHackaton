@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.sber.hackathon.view.main.info.InfoScreen
 import ru.sber.hackathon.view.main.list.ListScreen
 import ru.sber.hackathon.view.main.profile.ProfileScreen
 
@@ -40,8 +41,9 @@ fun MainScreen() {
             startDestination = "list",
             route = "bbr"
         ) {
-            composable("list") { ListScreen() }
+            composable("list") { ListScreen(navControllerBottomBar) }
             composable("profile") { ProfileScreen() }
+            composable("quoteInfo") { InfoScreen() }
         }
     }
 }
