@@ -94,7 +94,7 @@ fun PasswordRestoreScreen() {
                         )
                     )
                     if (result.isEmpty() || result.contains("error")) {
-                        snackbarHostState.showSnackbar("Введите данные для входа")
+                        snackbarHostState.showSnackbar("Введите данные для восстановления")
                     } else {
                         NavigationObject.navigate("auth")
                     }
