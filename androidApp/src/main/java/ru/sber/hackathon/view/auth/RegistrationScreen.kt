@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import ru.sber.hackathon.android.MainActivity
 import ru.sber.hackathon.android.MyApplicationTheme
 import ru.sber.hackathon.android.NavigationObject
 import ru.sber.hackathon.android.R
@@ -175,6 +176,8 @@ fun RegistrationScreen() {
                             email = ""
                             snackbarHostState.showSnackbar("Введите данные для регистрации")
                         } else {
+                            MainActivity.currentUserLogin = result.login
+                            MainActivity.currentUserSession = result.userToken
                             NavigationObject.navigate("main")
                         }
                     }
