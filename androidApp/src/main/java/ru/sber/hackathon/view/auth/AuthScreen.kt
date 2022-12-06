@@ -43,11 +43,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.sber.hackathon.android.MyApplicationTheme
 import ru.sber.hackathon.android.NavigationObject
 import ru.sber.hackathon.android.R
@@ -58,6 +59,7 @@ import ru.sber.hackathon.network.MainViewModel
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AuthScreen() {
+    var isErrorPassword by rememberSaveable { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scaffoldState = rememberScaffoldState()
     var login by rememberSaveable { mutableStateOf("") }
@@ -94,7 +96,8 @@ fun AuthScreen() {
                     backgroundColor = Color(0x14000000),
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
+                    disabledIndicatorColor = Color.Transparent,
+                    placeholderColor = Color(0x8C000000),
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 value = login,
@@ -112,17 +115,21 @@ fun AuthScreen() {
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = Color.Black,
                     disabledTextColor = Color.Transparent,
-                    backgroundColor = Color(0x14000000),
+                    backgroundColor = if (isErrorPassword) Color(0x14FA6D20) else Color(0x14000000),
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
+                    disabledIndicatorColor = Color.Transparent,
+                    placeholderColor = if (isErrorPassword) Color(0xFFE35502) else Color(0x8C000000),
                 ),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
-                    onDone = {keyboardController?.hide()}),
+                    onDone = { keyboardController?.hide() }),
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = {
+                    isErrorPassword = false
+                    password = it
+                },
                 placeholder = {
                     Text(text = stringResource(R.string.password))
                 }
@@ -153,9 +160,11 @@ fun AuthScreen() {
                                     )
                                 )
                                 if (result.userToken.isEmpty() || result.userToken == "error") {
+                                    withContext(Dispatchers.Main) {
+                                        password = ""
+                                        isErrorPassword = true
+                                    }
                                     snackbarHostState.showSnackbar("Пользователь не найден")
-                                    login = ""
-                                    password = ""
                                 } else {
                                     NavigationObject.navigate("main")
                                 }
