@@ -6,7 +6,7 @@
     <string name="enter">Вход</string>
     <string name="registration">Регистрация</string>
     <string name="forgotPassword">Забыли пароль?</string>
-    <string name="passwordRestoreInstruction">На данную электронную почту отправим ссылку для вопсстановления пароля</string>
+    <string name="passwordRestoreInstruction">На данную электронную почту отправим ссылку для восстановления пароля</string>
     <string name="restorePassword">Восстановить пароль</string>
     <string name="enterEmail">Укажите email</string>
     <string name="login">Логин</string>
