@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
                         composable("restorePassword") { PasswordRestoreScreen() }
                         composable("main") {
                             MainScreen(
-                                navController,
                                 listOf(
                                     MainScreenInfo(
                                         text = "Text 1",
