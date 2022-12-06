@@ -56,12 +56,12 @@ fun RegistrationScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(1.dp, Color.LightGray, CircleShape),
+                .border(1.dp, Color.Transparent, CircleShape),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 disabledTextColor = Color.Transparent,
-                backgroundColor = Color.LightGray,
+                backgroundColor = Color(0x14000000),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
@@ -76,12 +76,12 @@ fun RegistrationScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(1.dp, Color.LightGray, CircleShape),
+                .border(1.dp, Color.Transparent, CircleShape),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 disabledTextColor = Color.Transparent,
-                backgroundColor = Color.LightGray,
+                backgroundColor = Color(0x14000000),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
@@ -96,12 +96,12 @@ fun RegistrationScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(1.dp, Color.LightGray, CircleShape),
+                .border(1.dp, Color.Transparent, CircleShape),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 disabledTextColor = Color.Transparent,
-                backgroundColor = Color.LightGray,
+                backgroundColor = Color(0x14000000),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
@@ -116,7 +116,7 @@ fun RegistrationScreen() {
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(16.dp)
                     .background(
                         shape = RoundedCornerShape(12.dp),
                         color = Color(0xFF31373B)
