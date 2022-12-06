@@ -14,8 +14,8 @@ data class QuoteResponse(
     @SerialName("dialogue")
     val dialogue: Boolean,
 
-    @SerialName("favorite")
-    val favorite: Boolean,
+    @SerialName("private")
+    val private: Boolean,
 
     @SerialName("tags")
     val tags: List<String>,
